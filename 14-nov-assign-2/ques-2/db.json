@@ -1,0 +1,12 @@
+{
+  "tickets": [
+    {
+      "id": 1,
+      "title": "System Crash",
+      "description": "PC restarts randomly",
+      "priority": "high",
+      "user": "Alice",
+      "status": "pending"
+    }
+  ]
+}

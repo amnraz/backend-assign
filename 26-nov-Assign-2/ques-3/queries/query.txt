@@ -1,0 +1,86 @@
+1) Top 3 best-selling products by quantity
+----------------------------------------------------
+[
+  { $group: { _id: "$productName", totalQty: { $sum: "$quantity" } } },
+  { $sort: { totalQty: -1 } },
+  { $limit: 3 }
+]
+
+
+2) Total revenue for each category
+----------------------------------------------------
+[
+  { $group: { _id: "$category", revenue: { $sum: "$totalPrice" } } }
+]
+
+
+3) Average total price of all orders
+----------------------------------------------------
+[
+  { $group: { _id: null, avgPrice: { $avg: "$totalPrice" } } }
+]
+
+
+4) Number of orders placed each month
+----------------------------------------------------
+[
+  { $group: { _id: { $month: "$orderDate" }, orderCount: { $count: {} } } },
+  { $sort: { "_id": 1 } }
+]
+
+
+5) Percentage of canceled orders
+----------------------------------------------------
+[
+  { $group: { _id: null,
+      totalOrders: { $count: {} },
+      cancelled: { $sum: { $cond: [ { $eq: ["$status", "Cancelled"] }, 1, 0 ] } }
+  }},
+  { $project: { percentage: { $multiply: [ { $divide: ["$cancelled", "$totalOrders"] }, 100 ] } } }
+]
+
+
+6) Top product category by revenue
+----------------------------------------------------
+[
+  { $group: { _id: "$category", revenue: { $sum: "$totalPrice" } } },
+  { $sort: { revenue: -1 } },
+  { $limit: 1 }
+]
+
+
+7) Most frequently ordered product
+----------------------------------------------------
+[
+  { $group: { _id: "$productName", orders: { $count: {} } } },
+  { $sort: { orders: -1 } },
+  { $limit: 1 }
+]
+
+
+8) Monthly revenue trend
+----------------------------------------------------
+[
+  { $group: { _id: { $month: "$orderDate" }, revenue: { $sum: "$totalPrice" } } },
+  { $sort: { "_id": 1 } }
+]
+
+
+9) Count of orders by status
+----------------------------------------------------
+[
+  { $group: { _id: "$status", count: { $count: {} } } }
+]
+
+
+10) Total number of orders & total quantity sold
+----------------------------------------------------
+[
+  {
+    $group: {
+      _id: null,
+      totalOrders: { $count: {} },
+      totalQuantity: { $sum: "$quantity" }
+    }
+  }
+]

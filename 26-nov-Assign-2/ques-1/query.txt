@@ -1,0 +1,54 @@
+1️⃣ Total sales amount per category
+db.sales.aggregate([
+  { $group: { _id: "$category", totalSales: { $sum: "$amount" } } }
+]);
+
+2️⃣ Month-wise total sales
+db.sales.aggregate([
+  { $group: { _id: { $month: "$date" }, total: { $sum: "$amount" } } }
+]);
+
+3️⃣ Highest-selling product
+db.sales.aggregate([
+  { $group: { _id: "$product", total: { $sum: "$amount" } } },
+  { $sort: { total: -1 } },
+  { $limit: 1 }
+]);
+
+4️⃣ Average sale amount
+db.sales.aggregate([
+  { $group: { _id: null, avgAmount: { $avg: "$amount" } } }
+]);
+
+5️⃣ Count sales per month
+db.sales.aggregate([
+  { $group: { _id: { $month: "$date" }, count: { $sum: 1 } } }
+]);
+
+6️⃣ Total sales per region
+db.sales.aggregate([
+  { $group: { _id: "$region", total: { $sum: "$amount" } } }
+]);
+
+7️⃣ Top 3 revenue products
+db.sales.aggregate([
+  { $group: { _id: "$product", total: { $sum: "$amount" } } },
+  { $sort: { total: -1 } },
+  { $limit: 3 }
+]);
+
+8️⃣ Transactions per category
+db.sales.aggregate([
+  { $group: { _id: "$category", count: { $sum: 1 } } }
+]);
+
+9️⃣ Average sale per region
+db.sales.aggregate([
+  { $group: { _id: "$region", avgAmount: { $avg: "$amount" } } }
+]);
+
+🔟 Electronics & Fashion totals
+db.sales.aggregate([
+  { $match: { category: { $in: ["Electronics", "Fashion"] } } },
+  { $group: { _id: "$category", total: { $sum: "$amount" } } }
+]);

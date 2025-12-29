@@ -1,6 +1,0 @@
-{
-  "books": [
-    { "id": 2, "title": "1984", "author": "George Orwell", "year": 1949 },
-    { "title": "Brida", "author": "Alice ", "year": 2000, "id": 3 }
-  ]
-}
